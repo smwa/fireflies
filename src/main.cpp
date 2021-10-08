@@ -173,5 +173,3 @@ void loop() {
         Serial.println(logger->get_message().c_str());
     }
 }
-// TODO Move messages to the heap, somehow
-// TODO Test current heap changes.
