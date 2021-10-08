@@ -174,4 +174,4 @@ void loop() {
         Serial.println(logger->get_message().c_str());
     }
 }
-// TODO I want to tell the heart immediately about messages so it gains a pulse faster
+// TODO Move more members to the heap
