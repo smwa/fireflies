@@ -61,11 +61,12 @@ void Accelerometer6DoF::set_values(double x, double y, double z, double a, doubl
     Message* message = new Message();
     message->direction = direction;
     message->energy = energy;
-    // Copied to human
+    // Copied to heart
     double hue = human->get_tone();
     double saturation = 1.0;
     double luminosity = human->get_energy() * 0.2 + energy * 0.5;
     message->color = Color::get(hue, saturation, luminosity);
     send_message(message, this);
     last_direction_sent = direction;
+    human->send_message(message, this);
 };

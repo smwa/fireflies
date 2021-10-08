@@ -26,7 +26,7 @@ void LED::send_message(Message* message, Node* source) {
     double random_percent = (double)rand() / (double)RAND_MAX;
 
     // Chance of creating new message with tweaked color
-    if (random_percent < human->get_chaos() * 0.15) {
+    if (random_percent < human->get_chaos() * 0.008) {
         double rand_hue = (double)rand() / (double)RAND_MAX;
         double rand_saturation = 0.5 + ((double)rand() / (double)RAND_MAX) / 2.0;
         double rand_luminosity = human->get_energy() * 0.25 + 0.75 * (double)rand() / (double)RAND_MAX;

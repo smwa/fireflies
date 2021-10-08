@@ -12,6 +12,7 @@
 
 #include <Accelerometer6DoF.hpp>
 #include <Human.hpp>
+#include <Heart.hpp>
 #include <Message.hpp>
 #include <Clock.hpp>
 #include <Color.hpp>
@@ -36,6 +37,7 @@ Clock* clk = new Clock();
 Postman* postman = new Postman(clk);
 
 Human* human_node = new Human(postman);
+Heart* heart_node = new Heart(postman, human_node);
 Accelerometer6DoF* gy521_left = new Accelerometer6DoF(postman, human_node, 0);
 Accelerometer6DoF* gy521_right = new Accelerometer6DoF(postman, human_node, 191);
 LED* led_nodes[NUMBER_OF_LEDS - 2];
@@ -67,13 +69,13 @@ void setup() {
         led_nodes[i]->add_node(led_nodes[i-1]);
         led_nodes[i-1]->add_node(led_nodes[i]);
     }
-    human_node->add_node(led_nodes[length_one_top - 1]);
-    led_nodes[length_one_top - 1]->add_node(human_node);
+    heart_node->add_node(led_nodes[length_one_top - 1]);
+    led_nodes[length_one_top - 1]->add_node(heart_node);
 
     // length two
     int length_two_top = length_one_top + 31;
-    human_node->add_node(led_nodes[length_one_top]);
-    led_nodes[length_one_top]->add_node(human_node);
+    heart_node->add_node(led_nodes[length_one_top]);
+    led_nodes[length_one_top]->add_node(heart_node);
     for (int i = length_one_top + 1; i < length_two_top; i++) {
         led_nodes[i]->add_node(led_nodes[i-1]);
         led_nodes[i-1]->add_node(led_nodes[i]);
@@ -85,13 +87,13 @@ void setup() {
         led_nodes[i]->add_node(led_nodes[i-1]);
         led_nodes[i-1]->add_node(led_nodes[i]);
     }
-    human_node->add_node(led_nodes[length_three_top - 1]);
-    led_nodes[length_three_top - 1]->add_node(human_node);
+    heart_node->add_node(led_nodes[length_three_top - 1]);
+    led_nodes[length_three_top - 1]->add_node(heart_node);
 
     // length four
     int length_four_top = length_three_top + 64;
-    human_node->add_node(led_nodes[length_three_top]);
-    led_nodes[length_three_top]->add_node(human_node);
+    heart_node->add_node(led_nodes[length_three_top]);
+    led_nodes[length_three_top]->add_node(heart_node);
     for (int i = length_three_top + 1; i < length_four_top; i++) {
         led_nodes[i]->add_node(led_nodes[i-1]);
         led_nodes[i-1]->add_node(led_nodes[i]);
@@ -114,6 +116,7 @@ void setup() {
     gy521_left->_logger_component_name = "Left Sensor";
     gy521_right->_logger_component_name = "Right Sensor";
     human_node->_logger_component_name = "Human Node";
+    heart_node->_logger_component_name = "Heart Node";
 }
 
 void loop() {
@@ -159,6 +162,7 @@ void loop() {
     postman->process();
     postman->set_message_delay(human_node->get_pulse());
     human_node->tick(clk->get_time());
+    heart_node->tick(clk->get_time());
     gy521_left->tick(clk->get_time());
     gy521_right->tick(clk->get_time());
     for (int i = 0; i < NUMBER_OF_LEDS - 2; i++) {

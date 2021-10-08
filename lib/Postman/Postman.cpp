@@ -5,6 +5,7 @@ using namespace std;
 
 #include <Clock.hpp>
 #include <Message.hpp>
+#include <Heart.hpp>
 #include <Node.hpp>
 #include <QueuedMessage.hpp>
 #include <LED.hpp>
@@ -32,11 +33,15 @@ void Postman::process() {
         if (this->clock->get_time() >= message->arrival_time + this->message_delay) {
             LED* led_destination = dynamic_cast<LED*>(message->destination);
             Accelerometer6DoF* acc_destination = dynamic_cast<Accelerometer6DoF*>(message->destination);
+            Heart* heart_destination = dynamic_cast<Heart*>(message->destination);
             if (led_destination != nullptr) {
                 led_destination->send_message(message->message, message->source);
             }
             else if (acc_destination != nullptr) {
                 acc_destination->send_message(message->message, message->source);
+            }
+            else if (heart_destination != nullptr) {
+                heart_destination->send_message(message->message, message->source);
             }
             else {
                 message->destination->send_message(message->message, message->source);

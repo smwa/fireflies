@@ -3,7 +3,6 @@
 #include <math.h>
 
 #include <Message.hpp>
-#include <Color.hpp>
 
 double Human::get_chaos() {
     return chaos;
@@ -84,19 +83,5 @@ void Human::tick(int time) {
     energy_over_time[energy_over_time_index++] = energy;
     if (energy_over_time_index >= ENERGY_OVER_TIME_LENGTH) {
         energy_over_time_index -= ENERGY_OVER_TIME_LENGTH;
-    }
-
-    if (time - message_energies_times[(message_energies_index - 1) + MESSAGE_ENERGIES_LENGTH % MESSAGE_ENERGIES_LENGTH] > pulse * 50.0) {
-        info("Heartbeat");
-        Message* message = new Message();
-        message->direction = 0;
-        message->energy = energy;
-        // Copied from accelerometer
-        double hue = get_tone();
-        double saturation = 1.0;
-        double luminosity = get_energy() * 0.75;
-        message->color = Color::get(hue, saturation, luminosity);
-        
-        send_message(message, this);
     }
 };

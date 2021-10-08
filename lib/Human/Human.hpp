@@ -1,8 +1,6 @@
-class Message;
-
 #include <Node.hpp>
 
-class Postman;
+class Message;
 
 class Human : public Node
 {
