@@ -15,12 +15,11 @@ class Postman
             this->clock = clock;
             this->message_delay = 0;
         };
-        void enqueue(Message* message, Node* source, Node* destination);
+        void enqueue(Message message, Node* source, Node* destination);
         void process();
         void set_message_delay(int message_delay);
     private:
         Clock* clock;
         list<QueuedMessage> messages = list<QueuedMessage>();
-        set<Message*> garbage_tracker = set<Message*>();
         int message_delay;
 };

@@ -1,5 +1,7 @@
 #include <Color.hpp>
 
+#ifndef CLASS_MESSAGE
+#define CLASS_MESSAGE
 class Message
 {
     public:
@@ -7,3 +9,4 @@ class Message
         int direction = 0.0;
         Color color = Color::get(0.0, 0.0, 0.0);
 };
+#endif

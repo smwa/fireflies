@@ -10,19 +10,13 @@ using namespace std;
 #include <LED.hpp>
 #include <Accelerometer6DoF.hpp>
 
-void Postman::enqueue(Message* message, Node* source, Node* destination) {
+void Postman::enqueue(Message message, Node* source, Node* destination) {
     QueuedMessage queued_message = QueuedMessage();
     queued_message.arrival_time = this->clock->get_time();
     queued_message.message = message;
     queued_message.source = source;
     queued_message.destination = destination;
     this->messages.push_back(queued_message);
-    this->garbage_tracker.insert(message);
-    if (this->garbage_tracker.size() > 5000) {
-        Message* to_delete = *next(this->garbage_tracker.begin(), 0);
-        this->garbage_tracker.erase(0);
-        delete to_delete;
-    }
 };
 
 void Postman::process() {

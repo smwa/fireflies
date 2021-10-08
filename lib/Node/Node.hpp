@@ -15,7 +15,7 @@ class Node : public CanLog
             this->postman = postman;
         };
         void add_node(Node* node);
-        virtual void send_message(Message* message, Node* source);
+        virtual void send_message(Message message, Node* source);
         virtual void tick(int time);
         Postman* postman;
     protected:

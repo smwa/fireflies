@@ -12,7 +12,7 @@ class LED : public Node
 {
     public:
         LED(Postman* postman, Human* human, int led_index);
-        void send_message(Message* message, Node* source);
+        void send_message(Message message, Node* source);
         void tick(int time);
         int get_led_index();
         Color color = Color::get(0.0, 0.0, 0.0);

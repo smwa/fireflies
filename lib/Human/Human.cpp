@@ -20,13 +20,13 @@ double Human::get_pulse() {
     return pulse;
 };
 
-void Human::send_message(Message* message, Node* source) {
+void Human::send_message(Message message, Node* source) {
     Node::send_message(message, source);
     energy *= 5;
-    energy += message->energy;
+    energy += message.energy;
     energy /= 6;
 
-    tone += message->direction * message->energy / 16.0;
+    tone += message.direction * message.energy / 16.0;
     tone = ((int)(tone * 100000) % 100000) / 100000.0;
 
     double min_energy = energy;
@@ -38,7 +38,7 @@ void Human::send_message(Message* message, Node* source) {
     chaos = max_energy - min_energy;
 
     if (message_energies_times[message_energies_index - 1 % MESSAGE_ENERGIES_LENGTH] != last_tick) {
-        message_energies[message_energies_index] = message->energy;
+        message_energies[message_energies_index] = message.energy;
         message_energies_times[message_energies_index] = last_tick;
         message_energies_index += 1;
         if (message_energies_index >= MESSAGE_ENERGIES_LENGTH) {
@@ -46,7 +46,7 @@ void Human::send_message(Message* message, Node* source) {
         }
     }
 
-    double max_energy_from_message = message->energy;
+    double max_energy_from_message = message.energy;
     for (int i = 0; i < MESSAGE_ENERGIES_LENGTH; i++) {
         max_energy_from_message = max(max_energy_from_message, message_energies[i]);
     }

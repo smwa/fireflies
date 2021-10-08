@@ -18,7 +18,7 @@ class Human : public Node
         double get_chaos();
         double get_tone();
         double get_pulse();
-        void send_message(Message* message, Node* source);
+        void send_message(Message message, Node* source);
         void tick(int time);
     private:
         static const int ENERGY_OVER_TIME_LENGTH = 10;

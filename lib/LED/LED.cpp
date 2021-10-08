@@ -20,7 +20,7 @@ int LED::get_led_index() {
     return led_index;
 };
 
-void LED::send_message(Message* message, Node* source) {
+void LED::send_message(Message message, Node* source) {
     Node::send_message(message, source);
 
     double random_percent = (double)rand() / (double)RAND_MAX;
@@ -31,10 +31,10 @@ void LED::send_message(Message* message, Node* source) {
         double rand_saturation = 0.5 + ((double)rand() / (double)RAND_MAX) / 2.0;
         double rand_luminosity = human->get_energy() * 0.25 + 0.75 * (double)rand() / (double)RAND_MAX;
         Color new_color = Color::get(rand_hue, rand_saturation, rand_luminosity);
-        Message* new_message = new Message();
-        new_message->direction = 0;
-        new_message->energy = human->get_energy();
-        new_message->color = new_color;
+        Message new_message = Message();
+        new_message.direction = 0;
+        new_message.energy = human->get_energy();
+        new_message.color = new_color;
         postman->enqueue(new_message, this, this);
     }
     
@@ -42,16 +42,16 @@ void LED::send_message(Message* message, Node* source) {
     
     // if not chaotic, use what you're given
     if (random_percent > human->get_chaos()) {
-        target_color = message->color;
+        target_color = message.color;
         return;
     }
 
     random_percent = (double)rand() / (double)RAND_MAX;
     
     target_color = Color::get(
-        lerp(message->color.get_hue(), target_color.get_hue(), random_percent),
-        lerp(message->color.get_saturation(), target_color.get_saturation(), random_percent),
-        lerp(message->color.get_luminosity(), target_color.get_luminosity(), random_percent)
+        lerp(message.color.get_hue(), target_color.get_hue(), random_percent),
+        lerp(message.color.get_saturation(), target_color.get_saturation(), random_percent),
+        lerp(message.color.get_luminosity(), target_color.get_luminosity(), random_percent)
     );
 };
 
