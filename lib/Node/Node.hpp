@@ -13,7 +13,6 @@ class Node : public CanLog
     public:
         Node(Postman* postman) {
             this->postman = postman;
-            this->nodes = new list<Node*>();
         };
         void add_node(Node* node);
         virtual void send_message(Message* message, Node* source);
@@ -24,7 +23,6 @@ class Node : public CanLog
         int last_tick = 0;
     private:
         list<int>* message_arrival_times;
-        list<Message*>* messages;
-        list<Node*>* nodes = {};
+        list<Node*> nodes = list<Node*>();
 };
 #endif

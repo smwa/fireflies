@@ -7,29 +7,27 @@ using namespace std;
 #include <Message.hpp>
 #include <Heart.hpp>
 #include <Node.hpp>
-#include <QueuedMessage.hpp>
 #include <LED.hpp>
 #include <Accelerometer6DoF.hpp>
 
 void Postman::enqueue(Message* message, Node* source, Node* destination) {
-    QueuedMessage* queued_message = new QueuedMessage();
-    queued_message->arrival_time = this->clock->get_time();
-    queued_message->message = message;
-    queued_message->source = source;
-    queued_message->destination = destination;
-    this->messages->push_back(queued_message);
-    this->garbage_tracker->insert(message);
-    if (this->garbage_tracker->size() > 5000) {
-        Message* to_delete = *next(this->garbage_tracker->begin(), 0);
-        this->garbage_tracker->erase(0);
+    QueuedMessage queued_message = QueuedMessage();
+    queued_message.arrival_time = this->clock->get_time();
+    queued_message.message = message;
+    queued_message.source = source;
+    queued_message.destination = destination;
+    this->messages.push_back(queued_message);
+    this->garbage_tracker.insert(message);
+    if (this->garbage_tracker.size() > 5000) {
+        Message* to_delete = *next(this->garbage_tracker.begin(), 0);
+        this->garbage_tracker.erase(0);
         delete to_delete;
     }
 };
 
 void Postman::process() {
-    std::list<QueuedMessage*>::iterator it;
-    for (it = this->messages->begin(); it != this->messages->end(); it++) {
-        QueuedMessage* message = *it;
+    std::list<QueuedMessage>::iterator message;
+    for (message = this->messages.begin(); message != this->messages.end(); message++) {
         if (this->clock->get_time() >= message->arrival_time + this->message_delay) {
             LED* led_destination = dynamic_cast<LED*>(message->destination);
             Accelerometer6DoF* acc_destination = dynamic_cast<Accelerometer6DoF*>(message->destination);
@@ -46,8 +44,8 @@ void Postman::process() {
             else {
                 message->destination->send_message(message->message, message->source);
             }
-            it = this->messages->erase(it);
-            delete message;
+            message = this->messages.erase(message);
+            --message;
         }
     }
 };

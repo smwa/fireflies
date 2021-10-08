@@ -8,7 +8,7 @@ using namespace std;
 #include <Color.hpp>
 
 void Node::add_node(Node* node) {
-    this->nodes->push_back(node);
+    this->nodes.push_back(node);
 };
 
 void Node::send_message(Message* message, Node* source) {
@@ -19,7 +19,7 @@ void Node::send_message(Message* message, Node* source) {
     this->trace("Saturation", message->color.get_saturation());
     this->trace("Luminosity", message->color.get_luminosity());
     std::list<Node*>::iterator it;
-    for (it = this->nodes->begin(); it != this->nodes->end(); it++) {
+    for (it = this->nodes.begin(); it != this->nodes.end(); it++) {
         if ((*it) != source) {
             this->postman->enqueue(message, this, (*it));
         }

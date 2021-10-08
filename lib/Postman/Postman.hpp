@@ -2,10 +2,11 @@ using namespace std;
 #include <list>
 #include <set>
 
+#include <QueuedMessage.hpp>
+
 class Clock;
 class Message;
 class Node;
-class QueuedMessage;
 
 class Postman
 {
@@ -13,15 +14,13 @@ class Postman
         Postman(Clock* clock) {
             this->clock = clock;
             this->message_delay = 0;
-            messages = new list<QueuedMessage*>();
-            garbage_tracker = new set<Message*>();
         };
         void enqueue(Message* message, Node* source, Node* destination);
         void process();
         void set_message_delay(int message_delay);
     private:
         Clock* clock;
-        list<QueuedMessage*>* messages;
-        set<Message*>* garbage_tracker;
+        list<QueuedMessage> messages = list<QueuedMessage>();
+        set<Message*> garbage_tracker = set<Message*>();
         int message_delay;
 };

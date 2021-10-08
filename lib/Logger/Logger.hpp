@@ -14,7 +14,6 @@ class Logger
         Logger(Clock* clock, LOG_LEVEL log_level) {
             this->clock = clock;
             this->log_level = log_level;
-            messages = new list<string>();
         };
         void log(string component, string message, LOG_LEVEL log_level);
         void log(string component, string message, double attribute, LOG_LEVEL log_level);
@@ -25,7 +24,7 @@ class Logger
         static void set_instance(Logger* logger);
     private:
         LOG_LEVEL log_level;
-        list<string>* messages;
+        list<string> messages = list<string>();
         Clock* clock;
         static Logger* instance;
 };

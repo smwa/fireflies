@@ -13,7 +13,6 @@
 #include <Accelerometer6DoF.hpp>
 #include <Human.hpp>
 #include <Heart.hpp>
-#include <Message.hpp>
 #include <Clock.hpp>
 #include <Color.hpp>
 #include <Postman.hpp>
@@ -174,4 +173,5 @@ void loop() {
         Serial.println(logger->get_message().c_str());
     }
 }
-// TODO Move more members to the heap
+// TODO Move messages to the heap, somehow
+// TODO Test current heap changes.
