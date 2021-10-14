@@ -50,7 +50,7 @@ void Accelerometer6DoF::set_values(double x, double y, double z, double a, doubl
     if (direction == 0) {
         direction = -1;
     }
-    if (energy < 0.16) {
+    if (energy < 0.1) {
         return;
     }
     if (direction == last_direction_sent) {

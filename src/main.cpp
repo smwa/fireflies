@@ -100,7 +100,10 @@ void setup() {
     gy521_right->add_node(led_nodes[length_four_top - 1]);
     led_nodes[length_four_top - 1]->add_node(gy521_right);
 
+    // Delays are to give hard time to be powered up
+    delay(5);
     GY521.begin();
+    delay(5);
 
     GY521.beginTransmission(GY521_LEFT);
     GY521.write(0x6B); // PWR_MGMT_1 register
@@ -120,9 +123,6 @@ void setup() {
 
 void loop() {
     delay(1);
-
-    // leds[190].setRGB(255, 255, 255);
-    // FastLED.show();
 
     GY521.beginTransmission(GY521_LEFT);
     GY521.write(0x3B); // starting with register 0x3B (ACCEL_XOUT_H) [MPU-6000 and MPU-6050 Register Map and Descriptions Revision 4.2, p.40]

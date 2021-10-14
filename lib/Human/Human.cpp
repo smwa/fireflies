@@ -26,7 +26,7 @@ void Human::send_message(Message message, Node* source) {
     energy += message.energy;
     energy /= 6;
 
-    tone += message.direction * message.energy / 16.0;
+    tone += message.direction * message.energy / 4.0;
     tone = ((int)(tone * 100000) % 100000) / 100000.0;
 
     double min_energy = energy;
@@ -75,10 +75,11 @@ void Human::send_message(Message message, Node* source) {
 
 void Human::tick(int time) {
     Node::tick(time);
-    double drift_percentage = 1.0 - pow(9, time_since_last_tick / 2000.0) / pow(10, time_since_last_tick / 2000.0);
+    double dropoff_rate = 5000.0;
+    double drift_percentage = 1.0 - time_since_last_tick / dropoff_rate;
     energy -= energy * drift_percentage;
     chaos -= chaos * drift_percentage;
-    tone = (tone * (1.0 - drift_percentage / 4.0)) + (0.5 * drift_percentage / 4.0);
+    tone = (tone * (1.0 - drift_percentage / 8.0)) + (0.5 * drift_percentage / 8.0);
 
     energy_over_time[energy_over_time_index++] = energy;
     if (energy_over_time_index >= ENERGY_OVER_TIME_LENGTH) {

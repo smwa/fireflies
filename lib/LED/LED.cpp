@@ -21,43 +21,33 @@ int LED::get_led_index() {
 };
 
 void LED::send_message(Message message, Node* source) {
+    target_color = Color::get(
+        lerp(message.color.get_hue(), target_color.get_hue(), target_color.get_luminosity() / (message.color.get_luminosity() + target_color.get_luminosity())),
+        max(message.color.get_saturation(), target_color.get_saturation()),
+        max(message.color.get_luminosity(), target_color.get_luminosity())
+    );
+
+    message.color = target_color;
+
     Node::send_message(message, source);
 
-    double random_percent = (double)rand() / (double)RAND_MAX;
-
     // Chance of creating new message with tweaked color
-    if (random_percent < human->get_chaos() * 0.008) {
+    if ((double)rand() / (double)RAND_MAX < human->get_chaos() * 0.06) {
         double rand_hue = (double)rand() / (double)RAND_MAX;
         double rand_saturation = 0.5 + ((double)rand() / (double)RAND_MAX) / 2.0;
         double rand_luminosity = human->get_energy() * 0.25 + 0.75 * (double)rand() / (double)RAND_MAX;
         Color new_color = Color::get(rand_hue, rand_saturation, rand_luminosity);
         Message new_message = Message();
-        new_message.direction = 0;
+        new_message.direction = (rand() % 3) - 1;
         new_message.energy = human->get_energy();
         new_message.color = new_color;
         postman->enqueue(new_message, this, this);
     }
-    
-    random_percent = (double)rand() / (double)RAND_MAX;
-    
-    // if not chaotic, use what you're given
-    if (random_percent > human->get_chaos()) {
-        target_color = message.color;
-        return;
-    }
-
-    random_percent = (double)rand() / (double)RAND_MAX;
-    
-    target_color = Color::get(
-        lerp(message.color.get_hue(), target_color.get_hue(), random_percent),
-        lerp(message.color.get_saturation(), target_color.get_saturation(), random_percent),
-        lerp(message.color.get_luminosity(), target_color.get_luminosity(), random_percent)
-    );
 };
 
 void LED::tick(int time) {
     Node::tick(time);
-    double min_time_total_dropoff = 600.0; // lower is faster
+    double min_time_total_dropoff = 400.0; // lower is faster
     double new_luminosity = target_color.get_luminosity() - (human->get_chaos() + 0.1) * (double)time_since_last_tick / min_time_total_dropoff;
     target_color = Color::get(target_color.get_hue(), target_color.get_saturation(), new_luminosity);
     double lerp_amount = (double)time_since_last_tick / 200.0; // higher divider means slower fade
