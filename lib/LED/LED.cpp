@@ -47,7 +47,7 @@ void LED::send_message(Message message, Node* source) {
 
 void LED::tick(int time) {
     Node::tick(time);
-    double min_time_total_dropoff = 400.0; // lower is faster
+    double min_time_total_dropoff = 200.0; // lower is faster
     double new_luminosity = target_color.get_luminosity() - (human->get_chaos() + 0.1) * (double)time_since_last_tick / min_time_total_dropoff;
     target_color = Color::get(target_color.get_hue(), target_color.get_saturation(), new_luminosity);
     double lerp_amount = (double)time_since_last_tick / 200.0; // higher divider means slower fade

@@ -26,8 +26,14 @@ void Human::send_message(Message message, Node* source) {
     energy += message.energy;
     energy /= 6;
 
-    tone += message.direction * message.energy / 4.0;
-    tone = ((int)(tone * 100000) % 100000) / 100000.0;
+    // tone += message.direction * message.energy / 4.0;
+    // tone = ((int)(tone * 100000) % 100000) / 100000.0;
+    if (message.accelerometer_index == 1) {
+        tone += message.energy / 8.0;
+    }
+    else if (message.accelerometer_index == 2) {
+        tone -= message.energy / 8.0;
+    }
 
     double min_energy = energy;
     double max_energy = energy;
@@ -64,10 +70,10 @@ void Human::send_message(Message message, Node* source) {
     }
     if (pulse_length > 0) {
         pulse = pulse_length; // ms per pulse
-        while (pulse < 20.0) {
+        while (pulse < 10.0) {
             pulse *= 2.0;
         }
-        while (pulse > 200.0) {
+        while (pulse > 60.0) {
             pulse /= 2.0;
         }
     }
@@ -76,7 +82,7 @@ void Human::send_message(Message message, Node* source) {
 void Human::tick(int time) {
     Node::tick(time);
     double dropoff_rate = 5000.0;
-    double drift_percentage = 1.0 - time_since_last_tick / dropoff_rate;
+    double drift_percentage = time_since_last_tick / dropoff_rate;
     energy -= energy * drift_percentage;
     chaos -= chaos * drift_percentage;
     tone = (tone * (1.0 - drift_percentage / 8.0)) + (0.5 * drift_percentage / 8.0);

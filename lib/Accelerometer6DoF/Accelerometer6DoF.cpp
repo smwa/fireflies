@@ -61,6 +61,7 @@ void Accelerometer6DoF::set_values(double x, double y, double z, double a, doubl
     Message message = Message();
     message.direction = direction;
     message.energy = energy;
+    message.accelerometer_index = accelerometer_index;
     // Copied to heart
     double hue = human->get_tone();
     double saturation = 1.0;

@@ -37,8 +37,8 @@ Postman* postman = new Postman(clk);
 
 Human* human_node = new Human(postman);
 Heart* heart_node = new Heart(postman, human_node);
-Accelerometer6DoF* gy521_left = new Accelerometer6DoF(postman, human_node, 0);
-Accelerometer6DoF* gy521_right = new Accelerometer6DoF(postman, human_node, 191);
+Accelerometer6DoF* gy521_left = new Accelerometer6DoF(postman, human_node, 0, 1);
+Accelerometer6DoF* gy521_right = new Accelerometer6DoF(postman, human_node, 191, 2);
 LED* led_nodes[NUMBER_OF_LEDS - 2];
 
 // X, Y, Z, temperature, A, B, C
